@@ -1,23 +1,34 @@
 //
 //  PreviewProvider.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/3/23.
+//  Created by HardiB.Salih on 5/13/24.
 //
 
-import SwiftUI
+import Foundation
 import Firebase
 
-extension PreviewProvider {
-    static var dev: DeveloperPreview {
-        return DeveloperPreview.shared
+let dev = _PreviewProvider()
+class _PreviewProvider {
+    let user = User(id: NSUUID().uuidString, fullname: "Hardi", email: "hardi@gmail.com", username: "hardi19")
+    
+    var thread: Thread {
+        return Thread(threadId: NSUUID().uuidString ,
+                      ownerUid: "",
+                      caption: "The shortest war in history.",
+                      timestamp: Timestamp(),
+                      likes: 34, replyCount: 5,
+                      user: user)
     }
+    
+    lazy var reply = CapReply(
+        replyId: "",
+        threadId: "",
+        replyText: "Cool this is really cool",
+        threadReplyOwnerUid: "",
+        threadOwnerUid: "",
+        timestamp: Timestamp(),
+        thread: thread,
+        replyUser: user)
 }
 
-class DeveloperPreview {
-    static let shared = DeveloperPreview()
-    
-    let user = User(id: NSUUID().uuidString, fullname: "Tommy Shelby", email: "tommy@gmail.com", username: "tommy_shelby1")
-    
-    let thread = Thread(ownerUid: "123", caption: "This is a test thread", likes: 0, timestamp: Timestamp())
-}

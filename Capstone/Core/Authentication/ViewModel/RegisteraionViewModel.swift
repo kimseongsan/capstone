@@ -1,25 +1,30 @@
 //
 //  RegistrationViewModel.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/3/23.
+//  Created by HardiB.Salih on 5/13/24.
 //
 
 import Foundation
 
 class RegistrationViewModel: ObservableObject {
-    @Published var email = ""
-    @Published var password = ""
-    @Published var fullname = ""
-    @Published var username = ""
+    @Published  var email = ""
+    @Published  var password = ""
+    @Published  var fullname = ""
+    @Published  var username = ""
+    
+    // Function to check if any field is empty
+    func areFieldsEmpty() -> Bool {
+        return email.isEmpty || password.isEmpty || fullname.isEmpty || username.isEmpty
+    }
     
     @MainActor
     func createUser() async throws {
-        try await AuthService.shared.createUser(
+        try await AuthService.createUser(
             withEmail: email,
             password: password,
             fullname: fullname,
-            username: username
-        )
+            username: username)
+        print("Create User Here")
     }
 }

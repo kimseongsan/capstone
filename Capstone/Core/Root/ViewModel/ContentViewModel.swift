@@ -1,8 +1,8 @@
 //
 //  ContentViewModel.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/3/23.
+//  Created by HardiB.Salih on 5/13/24.
 //
 
 import Foundation
@@ -11,15 +11,15 @@ import Firebase
 
 class ContentViewModel: ObservableObject {
     @Published var userSession: FirebaseAuth.User?
-    private var cancellables = Set<AnyCancellable>()
-    
+    private var cancellable: AnyCancellable?
+
     init() {
-        setupSubscribers()
+        setUpSubscribers()
     }
     
-    private func setupSubscribers() {
-        AuthService.shared.$userSession.sink { [weak self] userSession in
+    private func setUpSubscribers(){
+        cancellable = AuthService.$userSession.sink { [weak self] userSession in
             self?.userSession = userSession
-        }.store(in: &cancellables)
+        }
     }
 }

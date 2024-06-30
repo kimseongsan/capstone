@@ -1,8 +1,8 @@
 //
 //  ProfileView.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/2/23.
+//  Created by HardiB.Salih on 5/12/24.
 //
 
 import SwiftUI
@@ -12,22 +12,20 @@ struct ProfileView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            // bio and stats
             VStack(spacing: 20) {
+                // Profile Image
                 ProfileHeaderView(user: user)
                 
-                
-                // user content list view
+                // User content list view
                 UserContentListView(user: user)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
         .padding(.horizontal)
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView(user: dev.user)
-    }
+#Preview {
+    ProfileView(user: dev.user)
 }

@@ -1,73 +1,88 @@
-//
-//  RegistrationView.swift
-//  Threads Clone
-//
-//  Created by Garrett Hanberg on 9/2/23.
-//
-
 import SwiftUI
 
 struct RegistrationView: View {
     @StateObject var viewModel = RegistrationViewModel()
     @Environment(\.dismiss) var dismiss
+    @State private var isSigningUp = false // Track whether sign-up is in progress
     
     var body: some View {
         VStack {
             Spacer()
-
             
-            VStack(spacing: 24) {
-                TextField("당신의 이메일을 입력해주세요.", text: $viewModel.email)
-                    .autocapitalization(.none)
-                    .modifier(CapTextFieldModelifier())
+            VStack(spacing: 16) {
+                TextField("이메일을 입력하세요", text: $viewModel.email)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .textInputAutocapitalization(.none)
                 
-                SecureField("비밀번호를 입력해주세요", text: $viewModel.password)
-                    .modifier(CapTextFieldModelifier())
+                SecureField("비밀번호를 입력하세요", text: $viewModel.password)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
                 
-                TextField("당신의 이름을 입력해주세요", text: $viewModel.fullname)
-                    .modifier(CapTextFieldModelifier())
+                TextField("이름을 입력하세요", text: $viewModel.fullname)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
                 
-                TextField("당신의 닉네임을 입력해주세요", text: $viewModel.username)
-                    .autocapitalization(.none)
-                    .modifier(CapTextFieldModelifier())
+                TextField("사용자 이름을 입력하세요", text: $viewModel.username)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .textInputAutocapitalization(.none)
             }
+            .padding(.horizontal, 32)
             
-            Button {
-                Task { try await viewModel.createUser() }
-            } label: {
-                Text("Sign Up")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-                    .frame(width: 352, height: 44)
-                    .background(.black)
-                    .cornerRadius(8)
-            }
-            .padding(.vertical)
+            Button(action: {
+                Task {
+                    isSigningUp = true
+                    try await viewModel.createUser()
+                    isSigningUp = false
+                }
+            }, label: {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(viewModel.areFieldsEmpty() ? Color(.systemGray4) : Color.blue)
+                        .frame(height: 44)
+                    
+                    if isSigningUp {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .tint(.white)
+                    } else {
+                        Text("회원가입")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                    }
+                }
+            })
+            .disabled(viewModel.areFieldsEmpty())
+            .padding(.top, 20)
+            .padding(.horizontal, 32)
             
             Spacer()
             
             Divider()
+                .padding(.vertical, 20)
             
-            Button {
+            Button(action: {
                 dismiss()
-            } label: {
-                HStack(spacing: 3) {
-                    Text("이미 계정이 있으신 가요?")
-                    
+            }, label: {
+                HStack(spacing: 4) {
+                    Text("이미 계정이 있습니까?")
                     Text("로그인")
                         .fontWeight(.semibold)
                 }
-                .foregroundColor(.black)
                 .font(.footnote)
-            }
-            .padding(.vertical, 16)
+                .foregroundColor(.blue)
+            })
+            .padding(.bottom, 30)
         }
+        .navigationBarHidden(true)
     }
 }
 
-struct RegistrationView_Previews: PreviewProvider {
-    static var previews: some View {
-        RegistrationView()
-    }
+#Preview {
+    RegistrationView()
 }

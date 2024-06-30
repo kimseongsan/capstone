@@ -1,21 +1,23 @@
 //
 //  LoginViewModel.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/3/23.
+//  Created by HardiB.Salih on 5/13/24.
 //
 
 import Foundation
-
 class LoginViewModel: ObservableObject {
-    @Published var email = ""
-    @Published var password = ""
+    @Published  var email = ""
+    @Published  var password = ""
+    
+    // Function to check if any field is empty
+    func areFieldsEmpty() -> Bool {
+        return email.isEmpty || password.isEmpty
+    }
     
     @MainActor
     func login() async throws {
-        try await AuthService.shared.login(
-            withEmail: email,
-            password: password
-        )
+        try await AuthService.login(withEmail: email, password: password)
+        print("Create User Here")
     }
 }

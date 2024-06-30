@@ -1,8 +1,8 @@
 //
 //  FeedView.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/2/23.
+//  Created by HardiB.Salih on 5/12/24.
 //
 
 import SwiftUI
@@ -12,36 +12,37 @@ struct FeedView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView(showsIndicators: false) {
+            ScrollView(showsIndicators: false){
                 LazyVStack {
                     ForEach(viewModel.threads) { thread in
-                        FeedCell(welfare: thread)
+                        NavigationLink(value: thread) {
+                            ThreadCell(thread: thread)
+                        }
                     }
                 }
             }
             .refreshable {
+//                print("DEBUG: Refresh threads")
                 Task { try await viewModel.fetchThreads() }
             }
+            .navigationDestination(for: Thread.self, destination: { thread in
+                DetailView(thread: thread)
+            })
             .navigationTitle("홈")
             .navigationBarTitleDisplayMode(.inline)
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    
-                } label: {
-                    Image(systemName: "arrow.counterclockwise")
-                        .foregroundColor(.black)
-                }
+        }.toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {}, label: {
+                    Image(systemName: "arrow.clockwise")
+                        .foregroundStyle(Color(.black))
+                })
             }
         }
     }
 }
 
-struct FeedView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            FeedView()
-        }
+#Preview {
+    NavigationStack {
+        FeedView()
     }
 }

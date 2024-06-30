@@ -1,23 +1,26 @@
 //
 //  ProfileHeaderView.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/5/23.
+//  Created by HardiB.Salih on 5/13/24.
 //
 
 import SwiftUI
 
 struct ProfileHeaderView: View {
-    var user: User?
+    let user: User?
     
     init(user: User?) {
         self.user = user
     }
     
     var body: some View {
+        // Profile Image
         HStack(alignment: .top) {
+            // For Bio and stats
             VStack(alignment: .leading, spacing: 12) {
-                // fullname and username
+                
+                // Full name and username
                 VStack(alignment: .leading, spacing: 4) {
                     Text(user?.fullname ?? "")
                         .font(.title2)
@@ -31,18 +34,14 @@ struct ProfileHeaderView: View {
                     Text(bio)
                         .font(.footnote)
                 }
-
             }
-            
             Spacer()
-            
-            CircularProfileImageView(user: user, size: .medium)
+            CircleProfileImageView(user: user, size: .large)
         }
+        .padding()
     }
 }
 
-struct ProfileHeaderView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileHeaderView(user: dev.user)
-    }
+#Preview {
+    ProfileHeaderView(user: dev.user)
 }

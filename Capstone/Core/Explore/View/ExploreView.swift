@@ -1,43 +1,43 @@
 //
 //  ExploreView.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/2/23.
+//  Created by HardiB.Salih on 5/12/24.
 //
 
 import SwiftUI
 
 struct ExploreView: View {
-    @State private var searchText = ""
     @StateObject var viewModel = ExploreViewModel()
+    @State var searchText = ""
     
     var body: some View {
         NavigationStack {
-            ScrollView {
+            ScrollView (showsIndicators: false) {
                 LazyVStack {
                     ForEach(viewModel.users) { user in
                         NavigationLink(value: user) {
                             VStack {
                                 UserCell(user: user)
-                                
                                 Divider()
-                            }
-                            .padding(.vertical, 4)
+                                    .padding(.horizontal)
+                            }.padding(.vertical, 4)
                         }
                     }
                 }
+                .navigationDestination(for: User.self) { user in
+                    ProfileView(user: user)
+                }
             }
-            .navigationDestination(for: User.self, destination: { user in
-                ProfileView(user: user)
-            })
+            .toolbar(.visible, for: .tabBar)
             .navigationTitle("검색")
-            .searchable(text: $searchText, prompt: "검색을 해주세요.")
+            .searchable(text: $searchText, prompt: "검색해주세요")
+           
+
         }
     }
 }
 
-struct ExploreView_Previews: PreviewProvider {
-    static var previews: some View {
-        ExploreView()
-    }
+#Preview {
+    ExploreView()
 }

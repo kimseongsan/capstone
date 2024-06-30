@@ -1,36 +1,40 @@
-//
-//  UserCell.swift
-//  Threads Clone
-//
-//  Created by Garrett Hanberg on 9/3/23.
-//
-
 import SwiftUI
 
 struct UserCell: View {
     let user: User
     
     var body: some View {
-        HStack {
-            CircularProfileImageView(user: user, size: .small)
+        HStack(spacing: 16) {
+            CircleProfileImageView(user: user, size: .small)
             
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(user.username)
-                    .fontWeight(.semibold)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
                 
                 Text(user.fullname)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
-            .font(.footnote)
             
             Spacer()
             
+            Button(action: {
+                // 액션 버튼에 필요한 동작을 추가하세요.
+            }) {
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.gray)
+            }
         }
+        .padding()
+        .background(Color(UIColor.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
         .padding(.horizontal)
     }
 }
 
-struct UserCell_Previews: PreviewProvider {
-    static var previews: some View {
-        UserCell(user: dev.user)
-    }
+#Preview {
+    UserCell(user: dev.user)
 }

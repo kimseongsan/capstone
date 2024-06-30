@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/2/23.
+//  Created by HardiB.Salih on 5/11/24.
 //
 
 import SwiftUI
@@ -11,9 +11,10 @@ struct ContentView: View {
     @StateObject var viewModel = ContentViewModel()
     
     var body: some View {
-        Group {
+        Group{
             if viewModel.userSession != nil {
                 CapTabView()
+                   
             } else {
                 LoginView()
             }
@@ -21,8 +22,6 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//#Preview {
+//    ContentView()
+//}

@@ -1,23 +1,26 @@
 //
 //  Thread.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/5/23.
+//  Created by HardiB.Salih on 5/14/24.
 //
 
+import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 
-struct Thread: Identifiable, Codable {
-    @DocumentID var informationId: String?
-    
+struct Thread : Identifiable, Codable, Hashable {
+    @DocumentID var threadId: String? // required to be optional
     let ownerUid: String
     let caption: String
-    var likes: Int
     let timestamp: Timestamp
+    var likes: Int
+    var replyCount: Int
+    
+    var didLike: Bool? = false
     
     var id: String {
-        return informationId ?? NSUUID().uuidString
+        return threadId ?? NSUUID().uuidString
     }
     
     var user: User?

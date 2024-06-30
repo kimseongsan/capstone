@@ -1,8 +1,8 @@
 //
 //  EditProfileView.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/3/23.
+//  Created by HardiB.Salih on 5/13/24.
 //
 
 import SwiftUI
@@ -10,12 +10,14 @@ import PhotosUI
 
 struct EditProfileView: View {
     let user: User
-    
     @State private var bio = ""
     @State private var link = ""
     @State private var isPrivateProfile = false
     @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel = EditProfileViewModel()
+    @State private var isLoading = false
+    
+    
+    @StateObject var viewModel = EidtProfileViewModel()
     
     var body: some View {
         NavigationStack {
@@ -24,17 +26,15 @@ struct EditProfileView: View {
                     .edgesIgnoringSafeArea([.bottom, .horizontal])
                 
                 VStack {
-                    // name and profile image
+                    //Name and profile Image
                     HStack {
-                        VStack(alignment: .leading) {
+                        VStack (alignment: .leading){
                             Text("이름")
                                 .fontWeight(.semibold)
-                            
                             Text(user.fullname)
+                            
                         }
-                        
                         Spacer()
-                        
                         PhotosPicker(selection: $viewModel.selectedItem) {
                             if let image = viewModel.profileImage {
                                 image
@@ -43,31 +43,29 @@ struct EditProfileView: View {
                                     .frame(width: 40, height: 40)
                                     .clipShape(Circle())
                             } else {
-                                CircularProfileImageView(user: user, size: .small)
+                                CircleProfileImageView(user: user, size: .small)
                             }
                         }
+                        
                     }
-                    
                     Divider()
                     
-                    // bio field
-                    
-                    VStack(alignment: .leading) {
+                    //Bio Field
+                    VStack (alignment: .leading){
                         Text("Bio")
                             .fontWeight(.semibold)
+                        TextField("Enter your Bio ...", text: $bio, axis: .vertical)
                         
-                        TextField("Enter your bio...", text: $bio, axis: .vertical)
                     }
-                    
                     Divider()
                     
-                    VStack(alignment: .leading) {
-                        Text("링크")
+                    //Link Field
+                    VStack (alignment: .leading){
+                        Text("Link")
                             .fontWeight(.semibold)
+                        TextField("Add Link...", text: $link, axis: .vertical)
                         
-                        TextField("Add link...", text: $link)
                     }
-                    
                     Divider()
                     
                     Toggle("Private Profile", isOn: $isPrivateProfile)
@@ -75,42 +73,52 @@ struct EditProfileView: View {
                 .font(.footnote)
                 .padding()
                 .background(.white)
-                .cornerRadius(10)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .overlay {
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .stroke(Color(.systemGray4), lineWidth: 1)
                 }
                 .padding()
+                
+                
             }
             .navigationTitle("프로필 수정")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                    .font(.subheadline)
-                    .foregroundColor(.black)
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("취소") { dismiss() }
+                        .font(.subheadline)
+                        .foregroundStyle(Color(.black))
                 }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("완료") {
+                        isLoading = true
                         Task {
                             try await viewModel.updateUserData()
+                            isLoading = false
                             dismiss()
                         }
+                        
                     }
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundColor(.black)
+                    .foregroundStyle(Color(.black))
                 }
             }
+            .overlay(
+                Group {
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .tint(.black)
+                    }
+                }
+            )
         }
+       
     }
 }
 
-struct EditProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        EditProfileView(user: dev.user)
-    }
+#Preview {
+    EditProfileView(user: dev.user)
 }

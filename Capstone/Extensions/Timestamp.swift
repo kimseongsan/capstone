@@ -1,8 +1,8 @@
 //
 //  Timestamp.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/5/23.
+//  Created by HardiB.Salih on 5/14/24.
 //
 
 import Foundation
@@ -11,7 +11,7 @@ import Firebase
 extension Timestamp {
     func timestampString() -> String {
         let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
+        formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth, .month]
         formatter.maximumUnitCount = 1
         formatter.unitsStyle = .abbreviated
         return formatter.string(from: self.dateValue(), to: Date()) ?? ""

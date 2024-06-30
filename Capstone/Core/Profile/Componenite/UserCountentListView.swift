@@ -1,68 +1,69 @@
 //
 //  UserContentListView.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/5/23.
+//  Created by HardiB.Salih on 5/13/24.
 //
 
 import SwiftUI
 
 struct UserContentListView: View {
-    @StateObject var viewModel: UserContentListViewModel
-    @State private var selectedFilter: ProfileFilter = .information
+    @StateObject var viewModel : UserContentViewModel
+    @State private var selectedFilter: ProfileThreadFilter = .threads
     @Namespace var animation
     
     private var filterBarWidth: CGFloat {
-        let count = CGFloat(ProfileFilter.allCases.count)
-        return UIScreen.main.bounds.width / count - 16
+        let count = CGFloat(ProfileThreadFilter.allCases.count)
+        return UIScreen.main.bounds.width / count - 20
     }
     
+    // This is How we inject user into a viewModel
     init(user: User) {
-        self._viewModel = StateObject(wrappedValue: UserContentListViewModel(user: user))
+        self._viewModel = StateObject(wrappedValue: UserContentViewModel(user: user))
     }
     
     var body: some View {
         VStack {
             HStack {
-                ForEach(ProfileFilter.allCases) { filter in
+                ForEach(ProfileThreadFilter.allCases) { filter in
                     VStack {
                         Text(filter.title)
                             .font(.subheadline)
-                            .fontWeight(selectedFilter == filter ? .semibold :
-                                    .regular)
+                            .fontWeight(selectedFilter == filter ? .semibold : .regular)
                         
                         if selectedFilter == filter {
                             Rectangle()
-                                .foregroundColor(.black)
+                                .foregroundStyle(Color(.black))
                                 .frame(width: filterBarWidth, height: 1)
                                 .matchedGeometryEffect(id: "item", in: animation)
-                            
                         } else {
                             Rectangle()
-                                .foregroundColor(.clear)
+                                .foregroundStyle(Color(.clear))
                                 .frame(width: filterBarWidth, height: 1)
                         }
-                    }
-                    .onTapGesture {
+                    }.onTapGesture {
                         withAnimation(.spring()) {
                             selectedFilter = filter
                         }
                     }
+                    
                 }
             }
             
             LazyVStack {
-                ForEach(viewModel.threads) { thread in
-                    FeedCell(welfare: thread)
+                switch selectedFilter {
+                case .threads:
+                    ForEach(viewModel.threads) { thread in
+                        ThreadCell(thread: thread)
+                            .transition(.move(edge: .leading))
+                    }
+                    }
                 }
-            }
-        }
-        .padding(.vertical, 8)
+            
+        }.padding(.vertical)
     }
 }
 
-struct UserContentListView_Previews: PreviewProvider {
-    static var previews: some View {
-        UserContentListView(user: dev.user)
-    }
+#Preview {
+    UserContentListView(user: dev.user)
 }

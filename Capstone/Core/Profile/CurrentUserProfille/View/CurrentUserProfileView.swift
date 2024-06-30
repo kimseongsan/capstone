@@ -1,8 +1,8 @@
 //
 //  CurrentUserProfileView.swift
-//  Threads Clone
+//  ThreadsAppSwiftUI
 //
-//  Created by Garrett Hanberg on 9/5/23.
+//  Created by HardiB.Salih on 5/13/24.
 //
 
 import SwiftUI
@@ -15,28 +15,28 @@ struct CurrentUserProfileView: View {
         return viewModel.currentUser
     }
     
+    
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
-                // bio and stats
-                VStack(spacing: 20) {
-                        ProfileHeaderView(user: currentUser)
+                VStack (spacing: 20){
+                    ProfileHeaderView(user: currentUser)
                     
-                    Button {
+                    Button(action: {
                         showEditProfile.toggle()
-                    } label: {
-                    Text("Edit Profile")
+                    }, label: {
+                        Text("Edit Profile")
                             .font(.subheadline)
                             .fontWeight(.semibold)
-                            .foregroundColor(.black)
-                            .frame(width: 352, height: 32)
+                            .foregroundStyle(Color(.black))
+                            .frame(width: UIScreen.main.bounds.width - 40, height: 32)
                             .background(.white)
-                            .cornerRadius(8)
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                             .overlay {
-                                RoundedRectangle(cornerRadius: 8)
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
                                     .stroke(Color(.systemGray4), lineWidth: 1)
                             }
-                    }
+                    })
                     
                     // user content list view
                     if let user = currentUser {
@@ -48,24 +48,21 @@ struct CurrentUserProfileView: View {
                 if let user = currentUser {
                     EditProfileView(user: user)
                 }
-            })
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        AuthService.shared.signOut()
-                    } label: {
-                        Image(systemName: "lock.open.fill")
-                    }
-                }
                 
-            }
+            })
             .padding(.horizontal)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Sign out") {
+                        AuthService.signOut()
+                    }.font(.footnote)
+                }
+            }
         }
     }
 }
 
-struct CurrentUserProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        CurrentUserProfileView()
-    }
+
+#Preview {
+    CurrentUserProfileView()
 }
