@@ -1,7 +1,9 @@
-# My Project
+# 캡스톤 프로젝트
 
-## Video Demonstration
+## 장애우 복지 알림 어플리케이션
+### 프로젝트 소개
+장애우분들이 보다 쉽고 간편하게 복지 정보를 얻을 수 있도록 하기 위해 제작한 프로젝트입니다. 로그인을 할때 장애의 정도를 받아 장애에 맞는 정보를 추천해주고 다른 복지 또한 검색을 통해 찾아볼 수 있습니다.
 
-[![Video Label](http://img.youtube.com/vi/ftcR_Dn6-Qg/0.jpg)](https://youtu.be/ftcR_Dn6-Qg)
-
-Here is a demonstration video of our project. Click the image above to watch it on YouTube.
+### 기능
+- OCR을 통한 장애정보를 받아 장애 정보에 맞는 복지 추천 기능
+- 카테고리별 장애 복지 정보 검색
